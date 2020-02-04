@@ -1,5 +1,6 @@
 plugins {
     java
+    kotlin("jvm") version "1.3.61"
 }
 
 group = "learning.gunju"
@@ -10,7 +11,15 @@ repositories {
 }
 
 dependencies {
-    testCompile("junit", "junit", "4.12")
+    implementation(kotlin("stdlib-jdk8"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 configure<JavaPluginConvention> {
