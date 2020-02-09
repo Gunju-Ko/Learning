@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class PrimitiveTypeTest {
 
     @Test
-    internal fun `test - Nullable Boxing`() {
+    fun `test - Nullable Boxing`() {
         val a = 10000
 
         val boxedA: Int? = a
