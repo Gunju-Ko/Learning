@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * @author 고건주 (gunju.ko@navercorp.com)
  */
-public class Template {
+public class Main {
 
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
@@ -19,13 +19,12 @@ public class Template {
             result.add(solve(input));
         }
 
-        //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < result.size(); ++i) {
-            System.out.println(result.get(i));
+        for (String value : result) {
+            System.out.println(value);
         }
     }
 
-    private static String solve(String input) {
+    public static String solve(String input) {
         return input;
     }
 }
