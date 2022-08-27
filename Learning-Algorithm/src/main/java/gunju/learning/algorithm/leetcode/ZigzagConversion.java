@@ -2,7 +2,6 @@ package gunju.learning.algorithm.leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author 고건주 (gunju.ko@navercorp.com)
@@ -13,22 +12,59 @@ public class ZigzagConversion {
         if (numRows == 1) return s;
 
         List<Position> positions = new ArrayList<>();
+        Rows rows = new Rows(numRows);
+
         Position now = new Position(0, 0, numRows, Direction.UP, s.charAt(0));
         positions.add(now);
+        rows.add(now.value, now.y);
 
         for (int i = 1; i < s.length(); ++i) {
             Position next = now.next(s.charAt(i));
             positions.add(next);
             now = next;
+            rows.add(now.value, now.y);
         }
 
-        positions.sort((o1, o2) -> {
-            if (o1.y > o2.y) return 1;
-            else if (o1.y < o2.y) return -1;
-            else return o1.x - o2.x;
-        });
+        return rows.get();
+    }
 
-        return positions.stream().map(p -> String.valueOf(p.value)).collect(Collectors.joining());
+    public static class Rows {
+        final Row[] rows;
+
+        public Rows(int rowNum) {
+            this.rows = new Row[rowNum];
+        }
+
+        public void add(char value, int y) {
+            if (rows[y] == null) {
+                rows[y] = new Row();
+            }
+            this.rows[y].add(value);
+        }
+
+        public String get() {
+            StringBuilder result = new StringBuilder();
+            for (Row row : rows) {
+                if (row != null) result.append(row.get());
+            }
+            return result.toString();
+        }
+    }
+
+    public static class Row {
+        StringBuilder result;
+
+        public Row() {
+            this.result = new StringBuilder();
+        }
+
+        public void add(char c) {
+            result.append(c);
+        }
+
+        public String get() {
+            return result.toString();
+        }
     }
 
 
