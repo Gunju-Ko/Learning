@@ -8,24 +8,27 @@ import java.util.List;
  */
 public class ZigzagConversion {
 
+    List<Position> positions;
+    Rows rows;
+
     public String convert(String s, int numRows) {
         if (numRows == 1) return s;
 
-        List<Position> positions = new ArrayList<>();
-        Rows rows = new Rows(numRows);
-
+        positions = new ArrayList<>();
+        rows = new Rows(numRows);
         Position now = new Position(0, 0, numRows, Direction.UP, s.charAt(0));
-        positions.add(now);
-        rows.add(now.value, now.y);
+        this.add(now);
 
         for (int i = 1; i < s.length(); ++i) {
-            Position next = now.next(s.charAt(i));
-            positions.add(next);
-            now = next;
-            rows.add(now.value, now.y);
+            now = now.next(s.charAt(i));
+            this.add(now);
         }
-
         return rows.get();
+    }
+
+    public void add(Position position) {
+        this.positions.add(position);
+        this.rows.add(position);
     }
 
     public static class Rows {
@@ -35,7 +38,11 @@ public class ZigzagConversion {
             this.rows = new Row[rowNum];
         }
 
-        public void add(char value, int y) {
+        public void add(Position position) {
+            this.add(position.value, position.y);
+        }
+
+        private void add(char value, int y) {
             if (rows[y] == null) {
                 rows[y] = new Row();
             }
