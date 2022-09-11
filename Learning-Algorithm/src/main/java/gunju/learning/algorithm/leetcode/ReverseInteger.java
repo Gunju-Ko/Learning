@@ -16,10 +16,13 @@ public class ReverseInteger {
     }
 
     private String reverse(String str) {
-        if (str.charAt(0) == '-') {
-            return "-" + reverse(str.substring(1));
-        } else {
-            return new StringBuilder(str).reverse().toString();
+        StringBuilder sb = new StringBuilder();
+        for (int i = str.length() - 1; i > 0; --i) {
+            sb.append(str.charAt(i));
         }
+        char first = str.charAt(0);
+        if (first == '-') sb.insert(0, first);
+        else sb.append(first);
+        return sb.toString();
     }
 }
