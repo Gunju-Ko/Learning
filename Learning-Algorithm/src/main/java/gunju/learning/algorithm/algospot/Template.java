@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * @author 고건주 (gunju.ko@navercorp.com)
  */
-public class Main {
+public class Template {
 
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
