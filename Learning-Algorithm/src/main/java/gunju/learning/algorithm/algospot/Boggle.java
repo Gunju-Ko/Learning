@@ -6,6 +6,7 @@ package gunju.learning.algorithm.algospot;
 public class Boggle {
 
     private final char[][] board = new char[5][5];
+    private Boolean[][][] cache;
 
     public Boggle embrace(int rowNum, String row) {
         if (rowNum > 5) throw new IllegalArgumentException("rowNum should not bigger than 5");
@@ -17,6 +18,7 @@ public class Boggle {
     }
 
     public boolean find(String s) {
+        initCache();
         char start = s.charAt(0);
         for (int y = 0; y < 5; ++y) {
             for (int x = 0; x < 5; ++x) {
@@ -30,8 +32,13 @@ public class Boggle {
         return false;
     }
 
+    private void initCache() {
+        cache = new Boolean[5][5][10];
+    }
+
     private boolean findRecursive(int y, int x, int position, String s) {
         if (position == s.length()) return true;
+        if (cache[y][x][position] != null && !cache[y][x][position]) return false;
         char current = s.charAt(position);
         int right = x + 1;
         int left = x - 1;
@@ -69,7 +76,7 @@ public class Boggle {
                 return true;
             }
         }
-
+        cache[y][x][position] = false;
         return false;
     }
 
