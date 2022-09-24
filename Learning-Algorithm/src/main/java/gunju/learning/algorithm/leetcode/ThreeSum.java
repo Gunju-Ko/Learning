@@ -16,12 +16,13 @@ public class ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
         DistinctList result = new DistinctList();
         Index index = new Index(nums);
+        List<Integer> compressed = index.getCompressed();
 
-        for (int i = 0; i < nums.length; ++i) {
-            for (int j = i + 1; j <nums.length; ++j) {
-                int a = nums[i];
-                int b = nums[j];
-                int c = -(nums[i] + nums[j]);
+        for (int i = 0; i < compressed.size(); ++i) {
+            for (int j = i + 1; j <compressed.size(); ++j) {
+                int a = compressed.get(i);
+                int b = compressed.get(j);
+                int c = -(a + b);
 
                 int wordCount = index.find(c);
                 if (wordCount == 0) continue;
@@ -77,6 +78,25 @@ public class ThreeSum {
                 return treeMap.get(num);
             }
             return 0;
+        }
+
+        public List<Integer> getCompressed() {
+            List<Integer> result = new ArrayList<>();
+
+            treeMap.forEach((num, count) -> {
+                if (count >= 3) {
+                    result.add(num);
+                    result.add(num);
+                    result.add(num);
+                } else if (count >= 2) {
+                    result.add(num);
+                    result.add(num);
+                } else {
+                    result.add(num);
+                }
+            });
+
+            return result;
         }
     }
 }
