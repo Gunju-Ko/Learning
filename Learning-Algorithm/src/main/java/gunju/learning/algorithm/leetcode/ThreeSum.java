@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * @author 고건주 (gunju.ko@navercorp.com)
@@ -16,14 +17,16 @@ public class ThreeSum {
     public List<List<Integer>> threeSum(int[] nums) {
         DistinctList result = new DistinctList();
         Index index = new Index(nums);
-        List<Integer> compressed = index.getCompressed();
+        List<Integer> compressed = index.getNums();
 
         for (int i = 0; i < compressed.size(); ++i) {
+            int a = compressed.get(i);
+            int aCount = index.find(a);
+            if (aCount >= 3 && a == 0) result.add(0, 0, 0);
+            else if (a != 0 && aCount >= 2 && (index.find(-(2 * a))) > 0) result.add(a, a, -(2 * a));
             for (int j = i + 1; j <compressed.size(); ++j) {
-                int a = compressed.get(i);
                 int b = compressed.get(j);
                 int c = -(a + b);
-
                 int wordCount = index.find(c);
                 if (wordCount == 0) continue;
                 if (a != b && b != c && c != a) {
@@ -62,13 +65,11 @@ public class ThreeSum {
 
     public static class Index {
         private final Map<Integer, Integer> treeMap = new TreeMap<>();
-        private final List<Integer> compressed = new ArrayList<>();
 
         public Index(int[] nums) {
             for (int num : nums) {
                 int count = find(num) + 1;
                 treeMap.put(num, count);
-                if (count <= 3) compressed.add(num);
             }
         }
 
@@ -78,8 +79,8 @@ public class ThreeSum {
             else return ret;
         }
 
-        public List<Integer> getCompressed() {
-            return compressed;
+        public List<Integer> getNums() {
+            return new ArrayList<>(treeMap.keySet());
         }
     }
 }
