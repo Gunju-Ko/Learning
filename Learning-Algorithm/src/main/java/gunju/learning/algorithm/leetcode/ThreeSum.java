@@ -2,6 +2,7 @@ package gunju.learning.algorithm.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,15 +19,19 @@ public class ThreeSum {
         DistinctList result = new DistinctList();
         Index index = new Index(nums);
         List<Integer> compressed = index.getNums();
-
+        if (index.max < 0 || index.min > 0) return Collections.emptyList();
         for (int i = 0; i < compressed.size(); ++i) {
             int a = compressed.get(i);
+            if (a < 0 && (-a) > (index.max * 2)) {
+                continue;
+            }
             int aCount = index.find(a);
             if (aCount >= 3 && a == 0) result.add(0, 0, 0);
             else if (a != 0 && aCount >= 2 && (index.find(-(2 * a))) > 0) result.add(a, a, -(2 * a));
             for (int j = i + 1; j <compressed.size(); ++j) {
                 int b = compressed.get(j);
                 int c = -(a + b);
+                if (a > 0 && b > 0 && c < index.min) break;
                 int wordCount = index.find(c);
                 if (wordCount == 0) continue;
                 if (a != b && b != c && c != a) {
@@ -65,11 +70,19 @@ public class ThreeSum {
 
     public static class Index {
         private final Map<Integer, Integer> treeMap = new TreeMap<>();
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
 
         public Index(int[] nums) {
             for (int num : nums) {
                 int count = find(num) + 1;
                 treeMap.put(num, count);
+                if (num < min) {
+                    min = num;
+                }
+                if (num > max) {
+                    max = num;
+                }
             }
         }
 
