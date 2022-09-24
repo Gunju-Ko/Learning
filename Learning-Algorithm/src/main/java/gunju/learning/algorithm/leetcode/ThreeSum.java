@@ -62,41 +62,24 @@ public class ThreeSum {
 
     public static class Index {
         private final Map<Integer, Integer> treeMap = new TreeMap<>();
+        private final List<Integer> compressed = new ArrayList<>();
 
         public Index(int[] nums) {
             for (int num : nums) {
-                if (treeMap.containsKey(num)) {
-                    treeMap.put(num, treeMap.get(num) + 1);
-                } else {
-                    treeMap.put(num, 1);
-                }
+                int count = find(num) + 1;
+                treeMap.put(num, count);
+                if (count <= 3) compressed.add(num);
             }
         }
 
         public int find(int num) {
-            if (treeMap.containsKey(num)) {
-                return treeMap.get(num);
-            }
-            return 0;
+            Integer ret = treeMap.get(num);
+            if (ret == null) return 0;
+            else return ret;
         }
 
         public List<Integer> getCompressed() {
-            List<Integer> result = new ArrayList<>();
-
-            treeMap.forEach((num, count) -> {
-                if (count >= 3) {
-                    result.add(num);
-                    result.add(num);
-                    result.add(num);
-                } else if (count >= 2) {
-                    result.add(num);
-                    result.add(num);
-                } else {
-                    result.add(num);
-                }
-            });
-
-            return result;
+            return compressed;
         }
     }
 }
